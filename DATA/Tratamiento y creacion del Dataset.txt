@@ -1,0 +1,46 @@
+A continuación analizamos los pasos realizados para la elaboración del dataset: 
+
+1er paso) Modificar los ficheros de los índice para poder trabajar con ellos.  
+
+    Para cada índice he tenido que modificar el formato de la informacion dada en las columnas 'Date' y 'Price' del fichero descargado. Estas 
+    han cosistido en pasar la columna 'Date' a formato datetime y de la columna 'Price' eliminar/modicar valores de puntuación (,.) y finalmente, 
+    pasar los valores numéricos a tipo float.
+
+    Esta conversión la he realizado con las funciones 'convertidor_ingles(df)' y 'convertidor_español(df)', que se encuentran en el fichero 
+    funciones.ipynb (carpeta 'UTILS'). He creado dos fórmulas diferentes debido a que había dos tipos distintos de formatos en los ficheros.
+
+    DAX.csv, DJ.csv, EURO.csv, GOLD.csv, IBEX.csv, NASDAQ.csv, NYA.csv, SP.csv, CAC4O.csv de cada carpeta son los ficheros ya transformados y unificados. 
+
+    En el caso de los ETFs, la columna price venía ya venía en tipo float y no ha necesitado de esta transformación para trabajar con ellos. 
+
+2º paso) Unificar el formato de cada fichero y crear una función para crear en estos las columnas necesarias. 
+
+    El siguiente paso consistía en crear una formula que aplicaría a cada fichero para crear las columnas necesarias con las que vamos a trabajar. 
+    La fórmula utilizada es 'crear_columnas(df,nombre,sector,tipo,area)'. 
+
+    En esta fórmula se crean 23 columnas, que las dividimos en varios contextos: 
+
+
+    1er contexto: Completamos columnas con los datos que incluimos a la hora de aplicar la función. Estos campos son: nombre, area (EEUU, EUROPA), TIPO (ETF, 
+    INDICE), SECTOR (FINANCIERO, INDUSTRIAL, CONSUMO...).
+
+    2o contexto: Normalizo los valores el valor máximo de todos al valor 1000 (columna: PRECIO NORMALIZADO MAX) y el mínimo al valor 1 (columna: PRECIO 
+    NORMALIZADO MIN). Esto es, si el valor mínimo/máximo de cada fichero es igual a 1/1000, cuál será  el valor X en dicha proporción (una regla de 3 básicamente).
+    Considero que me va a ser útil a la hora de mostrar los distintos índices y etfs en un gráfico ya que van a partir todos de un mismo valor y una misma escala. 
+
+    3er contexto: Teniendo en cuenta sus posiciones, obtengo para cada valor el precio de una semana, un mes, 1 año, 2 años y 5 años atrás, así como el valor de 
+    un semestre, 1 año, 2 años, 5 años hacia adelante.
+
+    4o contexto: Con las columnas obtenidas en el anterior apartado, cálculo el ROI (Return on Investment) tanto hacia atrás, es decir si hubiera invertido hace 
+    1 año, ¿cuál sería mi rentabilidad actual? como hacia adelante, esto la rentabilidad que me llevaría a X tiempo si invirtiese ahora. 
+
+3er paso) 
+    
+    Unifico todos los ficheros con un concatenate (pd.concat([DF_1, DF_2,... ], axis=0) y elimino las columnas creadas en el contexto 3 ya que una vez calculado 
+    los precios a X tiempo atrás y adelante, ya no van a serme útiles. Finalmente, paso la columna 'Date' al índice para poder operar con ella en el Data Analysis. 
+    El Datasets final se encuentra en la carpeta 'CÓDIGO' con el nombre: DATASETS_analisis.
+
+
+
+
+
